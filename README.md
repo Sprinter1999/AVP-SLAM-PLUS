@@ -37,7 +37,7 @@ Ubuntu 64-bit 18.04.ROS Melodic. [ROS Installation](http://wiki.ros.org/ROS/Inst
 
 Some packages of Python (eg. rospkg) are needed if necessary.
 
-**One helpful script to install ROS enviroment:**
+**One helpful script to install ROS enviroment (see this repo, I just upload this script named fishros under the main directory):**
 
 ```bash
 wget http://fishros.com/install -O fishros && sudo bash fishros
