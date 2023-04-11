@@ -42,7 +42,7 @@ Some packages of Python (eg. rospkg) are needed if necessary.
 ```bash
 wget http://fishros.com/install -O fishros && sudo bash fishros
 ```
-
+Remember to `source ~/.bashrc` file.
 ### 1.2 **Clone AVP-SLAM-PLUS** and **Load Gazebo Model** 
 
 Enter your /home directory and mkdir `catkin_ws` and `catkin_ws/src`
