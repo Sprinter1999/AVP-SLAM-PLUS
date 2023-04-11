@@ -33,16 +33,22 @@ This code is simple and is a good learning material for SLAM beginners.
 
 ## 1. Prerequisites
 ### 1.1 **Ubuntu** and **ROS**
-Ubuntu 64-bit 18.04.ROS Melodic. [ROS Installation](http://wiki.ros.org/ROS/Installation)
+`Ubuntu 64-bit 18.04` `ROS Melodic`
 
 Some packages of Python (eg. rospkg) are needed if necessary.
 
-**One helpful script to install ROS enviroment (see this repo, I just upload this script named fishros under the main directory):**
+**One helpful script to install ROS enviroment (Melodic Desktop Version)** 
 
 ```bash
 wget http://fishros.com/install -O fishros && sudo bash fishros
+# The fishros script is also provided in this repo
 ```
-Remember to `source ~/.bashrc` file.
+                  
+Then
+- Remember to `source ~/.bashrc` file. 
+- After that, you should `roscore` to initialize the ROS core at one terminal.
+- Run `rosrun gazebo_ros gazebo` to test gazebo.
+                  
 ### 1.2 **Clone AVP-SLAM-PLUS** and **Load Gazebo Model** 
 
 Enter your /home directory and mkdir `catkin_ws` and `catkin_ws/src`
@@ -73,7 +79,7 @@ Enter your /home directory and mkdir `catkin_ws` and `catkin_ws/src`
 
 #### **save map**
 
-if you want to save map and use the map to do localization, you should ensure your config file have be correctely set. The config file is at   **AVP-SLAM-PLUS/avp_slam_plus/configFile.yaml**
+if you want to save map and use the map to do localization, you should ensure your config file have be correctely set. The config file is at   **AVP-SLAM-PLUS/avp_slam_plus/config/configFile.yaml**
 
 ```
     mapSave: true
