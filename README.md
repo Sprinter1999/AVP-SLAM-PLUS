@@ -1,21 +1,22 @@
 # AVP-SLAM-PLUS
+## Before we go
 The original Implementation is produced by Guitao Liu, and I just fix some little missed points.
 
 AVP-SLAM-PLUS is an implementation of AVP-SLAM and some new contributions. Performance of AVP-SLAM-PLUS could be found in video(https://www.bilibili.com/video/BV11R4y137xb/)
 
 <p align='center'>
-<img src="images/mapping1.gif"  width = 45% height = 40% " />
-<img src="images/mapping2.gif" width = 45% height = 40% />
+<img src="images/mapping1.gif"  width = 30% height = 30% " />
+<img src="images/mapping2.gif" width = 30% height = 30% />
 <h5 align="center">mapping</h5>
 </p>
 
 <p align='center'>
-<img src="images/localization1.gif" width = 45% height = 45% />
-<img src="images/localization2.gif" width = 45% height = 45% />
+<img src="images/localization1.gif" width = 30% height = 30% />
+<img src="images/localization2.gif" width = 30% height = 30% />
 <h5 align="center">localization</h5>
 </p>
 
-AVP-SLAM-PLUS contain a simple implementation of [AVP-SLAM: Semantic Visual Mapping and Localization for Autonomous Vehicles in the Parking Lot (IROS 2020)](https://arxiv.org/abs/2007.01813) and some new contributions.
+AVP-SLAM-PLUS contain a simple implementation of [AVP-SLAM: Semantic Visual Mapping and Localization for Autonomous Vehicles in the Parking Lot `IROS 2020`](https://arxiv.org/abs/2007.01813) and some new contributions.
 
 The new contribustions are as follows:
 
@@ -24,7 +25,7 @@ The new contribustions are as follows:
 - Lastly,the system provide mapping mode and localization mode, that means you can not only do SLAM,but also do localization in a prior map.
 
 <p align='center'>
-<img src="images/avp_slam_plus_frame.PNG" width = 55% height = 55% />
+<img src="images/avp_slam_plus_frame.PNG" width = 80% height = 80% />
 <h5 align="center">AVP-SLAM-PLUS Framework</h5>
 </p>
 This code is simple and is a good learning material for SLAM beginners.
@@ -33,7 +34,7 @@ This code is simple and is a good learning material for SLAM beginners.
 
 ## 1. Prerequisites
 ### 1.1 **Ubuntu** and **ROS**
-`Ubuntu 64-bit 18.04` `ROS Melodic`
+`Ubuntu 64-bit 18.04` `ROS Melodic` `Gazebo`
 
 Some packages of Python (eg. rospkg) are needed if necessary.
 
@@ -47,7 +48,7 @@ wget http://fishros.com/install -O fishros && sudo bash fishros
 Then
 - Remember to `source ~/.bashrc` file. 
 - After that, you should `roscore` to initialize the ROS core at one terminal.
-- Run `rosrun gazebo_ros gazebo` to test gazebo.
+- Run `rosrun gazebo_ros gazebo` to test gazebo and initialize .gazebo directory in your ~/ directory. Gazebo is a simulation tool to form a virtual environment in ROS.
                   
 ### 1.2 **Clone AVP-SLAM-PLUS** and **Load Gazebo Model** 
 
@@ -55,7 +56,7 @@ Enter your /home directory and mkdir `catkin_ws` and `catkin_ws/src`
 
 ```
     cd ~/catkin_ws/src
-    git clone https://github.com/liuguitao/AVP-SLAM-PLUS.git
+    git clone https://github.com/Sprinter1999/AVP-SLAM-PLUS.git
     cd AVP-SLAM-PLUS/avp_slam_plus/model/
     unzip my_ground_plane.zip -d ~/.gazebo/models/
 ```
@@ -74,7 +75,8 @@ Enter your /home directory and mkdir `catkin_ws` and `catkin_ws/src`
 ## 3. RUN Example
 
 **Keep in mind, when you need launch one node, please source the bash file firstly.**
-
+                  
+Plus, in this implementation, `mapping` and `localization` are different periods. First you should construct a global map using instructions in `Mapping` period, then just close the `mapping` process and proceed your `localization` period based on the map constructed in `Mapping` period.  
 ### 3.1  **RGB Mode**
 
 #### **save map**
@@ -101,7 +103,7 @@ if you firstly control robot move, you should ensure **robot_control.py** in **A
 ```
 
 #### 3.1.2  **Localization**
-if you have do 3.1.1 and "save map", you can do localization in the prior map.
+if you have done 3.1.1 and configure your "save map", you can do localization in the prior map.
 ```
     roslaunch avp_slam_plus localizationRGB.launch
 ```
@@ -118,7 +120,7 @@ open a new terminal, control robot move
 
 #### **save map**
 
-if you want to save map and use the map to do localization, you should ensure your config file have be correctely set. The config file is at   **AVP-SLAM-PLUS-main/avp_slam_plus/configFile.yaml**
+if you want to save map and use the map to do localization, you should ensure your config file have be correctly set. The config file is at   **AVP-SLAM-PLUS-main/avp_slam_plus/configFile.yaml**
 ```
     mapSave: true
     mapSaveLocation: your map file address 
