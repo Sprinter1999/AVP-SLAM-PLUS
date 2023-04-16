@@ -7,6 +7,7 @@
     <arg name="headless" default="false"/>
     <arg name="debug" default="false"/>
 
+<!-- 这一行代码包含了一个名为empty_world.launch的launch文件，该文件定义了一个空的Gazebo仿真环境，并将其加载到这个launch文件中 -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
         <arg name="world_name" value="$(arg world_name)" />
         <arg name="debug" value="$(arg debug)" />
@@ -16,6 +17,7 @@
         <arg name="headless" value="$(arg headless)"/>
     </include>
 
+<!-- 这一行代码加载了一个机器人的描述文件，其中使用了xacro工具将机器人的URDF文件进行了处理，以便在Gazebo中进行仿真。 -->
     <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find simulate_robot)/urdf/robot_with_realsense.urdf.xacro'" /> 
 
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" ></node> 
@@ -24,9 +26,10 @@
         <param name="publish_frequency" type="double" value="50.0" />
     </node>
 
+<!-- 这一行代码启动了一个名为urdf_spawner的节点，用于在Gazebo中生成机器人的模型。 -->
     <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
           args="-urdf -model robot -param robot_description"/> 
-
+<!-- 这一行代码启动了一个名为rviz的节点，用于启动rviz视图工具，并加载一个名为simulate_environment.rviz的配置文件 -->
 	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find simulate_environment)/config/simulate_environment.rviz" required="true" />
 
 </launch>

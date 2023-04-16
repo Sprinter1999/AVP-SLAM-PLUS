@@ -1,4 +1,9 @@
+<!-- 这份代码定义了robot的sensor情况 -->
+
+
 <?xml version="1.0"?>
+
+<!-- ROS的URDF（Unified Robot Description Format）文件是一种XML文件，用于描述机器人的结构、关节、传感器、质量和其他属性。URDF文件被广泛应用于ROS中的机器人建模和仿真。 -->
 
 <robot name="mrobot" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
@@ -24,7 +29,7 @@
 		<parent link="base_link"/>
 		<child link="camera0_link"/>
 	</joint>
-
+<!-- 定义了一个名为"camera1_link"的link，它在机器人模型中表示一个相机，该相机由一个半径为0.01的黑色球体表示。该link的原点位于机器人坐标系的原点，方向为(0,0,0) -->
     <link name="camera1_link">
       <visual>
         <origin xyz=" 0 0 0 " rpy="0 0 0" />

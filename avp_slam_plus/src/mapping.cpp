@@ -88,6 +88,9 @@ bool mapSave=true;
 Eigen::Affine3f transWorldCurrent;
 
 //   transform point cloud according to pose
+//  这段代码定义了一个名为transformPointCloud的函数，
+//用于对输入的点云数据进行仿射变换，并返回变换后的点云数据。
+//函数的参数包括一个指向输入点云数据的指针cloudIn和一个Eigen::Affine3f类型的仿射变换transCur
 pcl::PointCloud<PointType>::Ptr transformPointCloud(pcl::PointCloud<PointType>::Ptr cloudIn, Eigen::Affine3f& transCur)
     {
         pcl::PointCloud<PointType>::Ptr cloudOut(new pcl::PointCloud<PointType>());
@@ -280,12 +283,13 @@ void saveMap_callback(const geometry_msgs::PoseStamped::ConstPtr &msg)
 
 int main(int argc, char *argv[]){
 
+    //这个节点句柄可以用来创建ROS中的各种组件，例如Publisher、Subscriber、Service等等
     ros::init(argc, argv, "test_odom");
     ros::NodeHandle nh;
     
     
     // get parameter from config file 
-    nh.param<std::string>("mapSaveLocation", mapSaveLocation, "/home/lgt/multicamera_ws/src/avp_slam/data/");
+    nh.param<std::string>("mapSaveLocation", mapSaveLocation, "/home/vipuser/multicamera_ws/src/avp_slam/data/");
     nh.param<double>("odomKeyFramDisThresh", odomKeyFramDisThresh, 1.0);
     nh.param<int>("invalidColorThresh", invalidColorThresh, 60);
     nh.param<bool>("useICP", useICP, true);

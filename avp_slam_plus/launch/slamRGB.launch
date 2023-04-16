@@ -1,6 +1,7 @@
 <launch>
     <!-- simulation environment -->
     <include file="$(find simulate_environment)/launch/multiCamera.launch" />
+    <!--这一行代码包含了一个名为multiCamera.launch的launch文件，该文件定义了一个包含多个摄像头的仿真环境，并将其加载到这个SLAM系统中。 -->
 
     <!-- load Parameters -->
     <rosparam file="$(find avp_slam_plus)/config/configFile.yaml" command="load" />
@@ -8,10 +9,13 @@
     <!-- generate point cloud from RGB image of multi cameras -->
     <node name="pointCloudFromRGB" pkg="avp_slam_plus" type="pointCloudFromRGB" output="screen">
     </node>
-
+    <!-- 这一行代码启动了一个名为pointCloudFromRGB的节点，该节点会从多个摄像头捕获的RGB图像中生成点云数据。 -->
 　　 <!--  localization and mapping -->
     <node name="mapping" pkg="avp_slam_plus" type="mapping" output="screen">
     </node>
   
 
 </launch>
+
+
+

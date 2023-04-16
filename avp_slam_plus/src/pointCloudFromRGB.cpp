@@ -1,4 +1,5 @@
 //liuguitao created in 2021.12.22
+//xuefen modified in 2023.4.13 by adding some readable comments
 
 
 
@@ -36,6 +37,7 @@ ros::Publisher pubCamera1CloudNew;
 ros::Publisher pubCameraCloudFrame;
 
 typedef pcl::PointXYZRGB PointType;
+//智能指针camera0Cloud，指向一个PointCloud对象;PointCloud对象中存储了PointType类型的点云数据。
 pcl::PointCloud<PointType>::Ptr camera0Cloud(new pcl::PointCloud<PointType>());
 pcl::PointCloud<PointType>::Ptr camera1Cloud(new pcl::PointCloud<PointType>());
 pcl::PointCloud<PointType>::Ptr camera2Cloud(new pcl::PointCloud<PointType>());
@@ -43,6 +45,7 @@ pcl::PointCloud<PointType>::Ptr camera3Cloud(new pcl::PointCloud<PointType>());
 pcl::PointCloud<PointType>::Ptr camera4Cloud(new pcl::PointCloud<PointType>());
 pcl::PointCloud<PointType>::Ptr camera5Cloud(new pcl::PointCloud<PointType>());
 pcl::PointCloud<PointType>::Ptr cameraFrameCloud(new pcl::PointCloud<PointType>());
+//camera0CloudBuf表示一个存储PointCloud2类型数据的队列
 std::queue<sensor_msgs::PointCloud2ConstPtr> camera0CloudBuf;
 std::queue<sensor_msgs::PointCloud2ConstPtr> camera1CloudBuf;
 std::queue<sensor_msgs::PointCloud2ConstPtr> camera2CloudBuf;
