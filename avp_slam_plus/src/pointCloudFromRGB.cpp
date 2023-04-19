@@ -493,6 +493,9 @@ int main(int argc, char *argv[]){
    R0 = Eigen::Map<const Eigen::Matrix<double, -1, -1, Eigen::RowMajor>>(R0Double.data(), 3, 3);
    T0 = Eigen::Map<const Eigen::Matrix<double, -1, -1, Eigen::RowMajor>>(T0Double.data(), 3, 1);
 
+//创建了6个ROS订阅器（Subscriber），分别用来接收6个相机的图像数据。这些订阅器将接收到的图像数据传递给相应的回调函数，这些回调函数将在图像数据到达时被调用。
+
+// 创建了一个ROS发布器（Publisher），用来发布相机的点云数据
 
    ros::Subscriber subCamera0Image = nh.subscribe("/camera0/color/image_raw", 100, camera0ImageHandler);
    ros::Subscriber subCamera1Image = nh.subscribe("/camera1/color/image_raw", 100, camera1ImageHandler);
@@ -511,6 +514,8 @@ int main(int argc, char *argv[]){
     while (ros::ok()) {
         ros::spinOnce();
         //  synchronism images of multi cameras according to timestamp
+        // 这段代码的作用是检查每个相机的图像缓存是否都不为空，并对这些图像进行同步操作，保证它们的时间戳相等。
+        // 如果时间戳不相等，则进行同步操作，删除过时的图像，并等待下一次循环重新开始同步。
         if(!camera0ImageBuf.empty() && !camera1ImageBuf.empty() && !camera2ImageBuf.empty() && !camera3ImageBuf.empty() && !camera4ImageBuf.empty() && !camera5ImageBuf.empty()){
             timeCamera0Image=camera0ImageBuf.front()->header.stamp.toSec();
             timeCamera1Image=camera1ImageBuf.front()->header.stamp.toSec();
@@ -543,7 +548,7 @@ int main(int argc, char *argv[]){
             
             std::cout<<"image is  syn"<<std::endl;
            
-
+            //从每个相机的图像缓存队列中获取第一个图像，并将其转换为OpenCV格式的图像，同时保证在多线程环境下的安全性
             mBuf.lock();
             image0_ptr = cv_bridge::toCvShare(camera0ImageBuf.front());
             camera0ImageBuf.pop();
@@ -575,6 +580,7 @@ int main(int argc, char *argv[]){
             mBuf.unlock();
 
             //for every camera, compute point cloud according to IPM principle
+            // 根据相机的内参和外参，以及图像中的像素坐标，计算出对应的三维点云坐标，并将它们存储在对应的点云指针中
             camera0Cloud->clear();
             calCloudFromImage(K0,RT0,image0_ptr->image,camera0Cloud);
 
@@ -595,6 +601,7 @@ int main(int argc, char *argv[]){
 
             
             // filter point cloud, decrease number of point cloud 
+            // 这段代码的作用是对每个相机的点云数据进行下采样，以减少点云的数量并更新相应相机的点云数据指针*cameraXCloud
             pcl::PointCloud<PointType> camera0CloudDS;
             pcl::VoxelGrid<PointType> downSizeFilter;
             downSizeFilter.setInputCloud(camera0Cloud);
@@ -633,6 +640,8 @@ int main(int argc, char *argv[]){
             *camera5Cloud=camera5CloudDS;
 
             // accumulate point cloud of every camera
+            // 将每个相机的点云数据累加到一个总的点云数据中，并将结果发布为一个ROS点云消息。
+            // 它首先通过调用clear()函数来清空总的点云数据cameraFrameCloud，然后对每个相机的点云数据进行累加，并将结果存储在cameraFrameCloud中
             cameraFrameCloud->clear();
             *cameraFrameCloud=*cameraFrameCloud+*camera0Cloud;
             *cameraFrameCloud=*cameraFrameCloud+*camera1Cloud;

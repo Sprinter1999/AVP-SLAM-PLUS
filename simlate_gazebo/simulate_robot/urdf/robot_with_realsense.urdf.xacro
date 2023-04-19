@@ -29,7 +29,8 @@
 		<parent link="base_link"/>
 		<child link="camera0_link"/>
 	</joint>
-<!-- 定义了一个名为"camera1_link"的link，它在机器人模型中表示一个相机，该相机由一个半径为0.01的黑色球体表示。该link的原点位于机器人坐标系的原点，方向为(0,0,0) -->
+
+<!-- 定义了一个名为"camera1_link"的link，它在机器人模型中表示一个相机，该相机由一个半径为0.01的黑色球体表示。该link的原点位于机器人坐标系的原点，方向为(0,0,0)，rpy是旋转角 -->
     <link name="camera1_link">
       <visual>
         <origin xyz=" 0 0 0 " rpy="0 0 0" />
@@ -122,6 +123,12 @@
                 <child link="camera5_link"/>
               </joint> 
 
+
+
+<!--turnGravityOff参数表示是否关闭重力影响，update_rate参数表示相机传感器的更新频率为30Hz-->
+<!--realsense_depth。horizontal_fov和vertical_fov表示相机的水平和垂直视场角，分别为75度和65度。width和height表示图像的分辨率为640x480，format表示图像格式为RGB8。-->
+<!--near和far参数表示相机的视场范围，这里设置为0.01米至50m -->
+<!--distortionK1、distortionK2、distortionK3、distortionT1和distortionT2表示相机的畸变参数，CxPrime、Cx、Cy和focalLength表示相机的内参矩阵参数-->
 
         <gazebo reference="camera0_link">
 		<turnGravityOff>false</turnGravityOff>

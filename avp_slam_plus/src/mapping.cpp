@@ -167,6 +167,8 @@ void cameraCloudHandler(const sensor_msgs::PointCloud2ConstPtr &cameraCloudMsg)
     }
     
     // compute robot's pose with method of ndt
+    //在配准过程中，NDT算法使用这些概率密度函数来计算点云之间的相似度，并通过优化位姿来最小化相似度误差。
+    // NDT算法的优点是可以处理大规模点云，对噪声和野值具有一定的鲁棒性，并且可以保持点云的原始信息，但缺点是计算量比较大，速度较慢。
     if(useNDT){
        pcl::NormalDistributionsTransform<PointType, PointType> ndt;
        ndt.setTransformationEpsilon(ndtTransformationEpsilon);
@@ -184,6 +186,8 @@ void cameraCloudHandler(const sensor_msgs::PointCloud2ConstPtr &cameraCloudMsg)
     }
      
     //   compute robot's pose with method of icp   
+    //  首先选取一个初始位姿，将一个点云变换到另一个点云的坐标系下，然后计算两个点云之间的距离误差，接着根据误差大小计算一个优化方向，
+    // 通过旋转和平移来更新点云的位姿，最后迭代求解直到收敛。ICP算法的优点是简单易懂，可以用于快速配准，但它对初始位姿的选择比较敏感，有时会陷入局部最优解。
     if(useICP){
         static pcl::IterativeClosestPoint<PointType, PointType> icp;
         icp.setMaxCorrespondenceDistance(icpMaxCorrespondenceDistance); 
@@ -309,6 +313,8 @@ int main(int argc, char *argv[]){
     ros::Subscriber subcameraCloud = nh.subscribe<sensor_msgs::PointCloud2>("/cameraCloudFrame", 100, cameraCloudHandler);
     ros::Subscriber subSaveMap = nh.subscribe<geometry_msgs::PoseStamped>("/move_base_simple/goal", 10, saveMap_callback);
     
+
+    // 创建ROS发布者：使用ros::Publisher创建4个ROS发布者，分别用于发布当前帧的特征点云、当前帧的特征点云在世界坐标系下的坐标、全局特征点云地图和当前帧的位姿估计。
     pubCurrentFeature = nh.advertise<sensor_msgs::PointCloud2>("/currentFeature", 100);
     pubCurrentFeatureInWorld= nh.advertise<sensor_msgs::PointCloud2>("/currentFeatureInWorld", 100);
     pubGlobalFeature=nh.advertise<sensor_msgs::PointCloud2>("/globalFeatureMap", 100);
@@ -324,6 +330,7 @@ int main(int argc, char *argv[]){
     }
 
     //  save map for relocation
+    //  在程序结束之前，如果mapSave参数为true，则使用pcl::io::savePCDFileASCII()函数将全局特征点云地图保存为PCD文件。
     if(mapSave){
        std::cout << "map save start" << std::endl;
        pcl::PointCloud<PointType>  globalMap=*globalFeatureCloud;
